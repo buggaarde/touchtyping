@@ -1,0 +1,19 @@
+p {
+	background: none;
+}
+
+mark {
+	background : none;
+}
+
+mark.red {
+	color: red;
+}
+
+mark.green {
+	color: green;
+}
+
+mark.neutral {
+	color: black;
+}
