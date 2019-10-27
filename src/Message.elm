@@ -1,6 +1,7 @@
 module Message exposing (..)
 
 
-type Msg
-    = KeyPress
-    | FinishedTyping
+type KeyPress input
+    = StartedTyping input
+    | FinishedTyping input
+    | JustTyping input

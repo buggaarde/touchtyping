@@ -5,29 +5,39 @@ import Html as Html
 import Html.Attributes as Attr
 import Html.Events as Events
 import Message
+import Model exposing (Model)
 import ReferenceText as RT
 
 
 main =
-    Browser.sandbox { init = 0, update = update, view = view }
+    Browser.sandbox
+        { init =
+            { reference = "This is the text you're supposed to be writing."
+            , actual = ""
+            , isTyping = False
+            }
+        , update = update
+        , view = view
+        }
 
 
+update : Message.KeyPress String -> Model -> Model
 update msg model =
     case msg of
-        Message.KeyPress ->
+        Message.StartedTyping newActual ->
+            { model | actual = newActual }
+
+        Message.FinishedTyping newActual ->
             model
 
-        Message.FinishedTyping ->
-            model
+        Message.JustTyping newActual ->
+            { model | actual = newActual }
 
 
+view : Model -> Html.Html (Message.KeyPress String)
 view model =
-    let
-        placeholder =
-            "Some text"
-    in
     Html.div []
-        [ RT.referenceText "This is the text you have to type." placeholder
+        [ RT.referenceView model
         , Html.div [] []
-        , Html.input [ Attr.placeholder placeholder ] []
+        , RT.actualView model
         ]
