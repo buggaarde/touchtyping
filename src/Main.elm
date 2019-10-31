@@ -4,40 +4,57 @@ import Browser
 import Html as Html
 import Html.Attributes as Attr
 import Html.Events as Events
-import Message
-import Model exposing (Model)
-import ReferenceText as RT
+import View
+
+
+type alias Model =
+    { reference : String, actual : String, isTyping : Bool, doneTyping : Bool }
+
+
+type KeyPress input
+    = JustTyping input
 
 
 main =
     Browser.sandbox
         { init =
-            { reference = "This is the text you're supposed to be writing."
+            { reference = "The quick brown fox jumps over the lazy dog."
             , actual = ""
             , isTyping = False
+            , doneTyping = False
             }
         , update = update
         , view = view
         }
 
 
-update : Message.KeyPress String -> Model -> Model
+update : KeyPress String -> Model -> Model
 update msg model =
     case msg of
-        Message.StartedTyping newActual ->
-            { model | actual = newActual }
+        JustTyping newActual ->
+            if model.reference == model.actual then
+                { model | doneTyping = True, actual = newActual }
 
-        Message.FinishedTyping newActual ->
-            model
+            else if model.isTyping == False then
+                { model | isTyping = True, actual = newActual }
 
-        Message.JustTyping newActual ->
-            { model | actual = newActual }
+            else
+                { model | actual = newActual }
 
 
-view : Model -> Html.Html (Message.KeyPress String)
+actual model =
+    Html.input
+        [ Attr.class "main"
+        , Attr.placeholder "Start writing here"
+        , Attr.value model.actual
+        , Events.onInput JustTyping
+        ]
+        []
+
+
+view : Model -> Html.Html (KeyPress String)
 view model =
-    Html.div []
-        [ RT.referenceView model
-        , Html.div [] []
-        , RT.actualView model
+    Html.div [ Attr.class "app" ]
+        [ View.reference model
+        , actual model
         ]

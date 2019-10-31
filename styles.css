@@ -1,5 +1,58 @@
-p {
+.app {
+	background: #fefaff;
+	
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	
+	display: grid;
+	grid-template-columns: [all-left] auto [mid-left] 33% [mid-right] auto [all-right];
+	grid-template-rows: 15% minmax(auto, 15%) 1fr 45px 1fr 10fr;
+	
+	grid-template-areas:
+		"left header right"
+		"left ref-text right"
+		"left padding-top right"
+		"left input-text right"
+		"left padding-right right"
+		"left footer right";
+}
+
+div.header {
+	grid-area: header;
+}
+
+input.main {
+	grid-area: input-text;
+}
+
+span.reference {
+	grid-area: ref-text;
+}
+
+input.main {
+	border: 1px solid black;
+	border-radius: 5px;
+	font-size: 25px;
+	text-align: left;
+}
+
+span.reference {
+	text-align: center;
 	background: none;
+	font-size: 40px;
+	font-family : Courier;
+	overflow: hidden;
+}
+
+span.matched {
+	border: 1px solid black;
+}
+
+span.not-matched {
+	border: 1px solid #e45755;
 }
 
 mark {
@@ -7,11 +60,11 @@ mark {
 }
 
 mark.red {
-	color: red;
+	background: #e45755;
 }
 
-mark.green {
-	color: green;
+Mark.green {
+	background: #afe7a1;
 }
 
 mark.neutral {
